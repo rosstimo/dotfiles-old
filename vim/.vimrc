@@ -1,129 +1,126 @@
-" Tim R's vimrc file.
-"
-" Individual settings can be reverted with ":set option&".
-" Other commands can be reverted as mentioned below.
 
-" Allow backspacing over everything in insert mode.
+" Don't worry about vi compatability
+set nocompatible
+
+" "Editor Stuff"
+"
+" Don’t show the intro message when starting Vim
+set shortmess=atI
+
+" Show the filename in the window titlebar
+set title
+
+" Disable error bells
+set noerrorbells
+
+" Always show status line
+set laststatus=2
+
+" Show the cursor position
+set ruler
+
+" Show the current mode
+set showmode
+
+" Enable syntax highlighting
+syntax on
+
+" Enable line numbers
+set number
+set relativenumber
+
+" Enhance command-line completion
+set wildmenu
+
+" Show the (partial) command as it’s being typed
+set showcmd
+
+" Make tabs as wide as two spaces
+set tabstop=2
+
+" "Navigation"
+
+" Create 'tags' file
+" - ^] jump to tag under curser
+" - g^] ambiguous tag
+" - ^t jump back up the tag stack
+command! MakeTags !ctags -R .
+
+
+
+" "System"
+
+" Display matching files on Tab Complete
+" fuzzy file finder 
+set path+=**
+
+" Use the OS clipboard by default (on versions compiled with `+clipboard`) there are keybindings anyway
+set clipboard=unnamed
+
+" Allow cursor keys in insert mode
+set esckeys
+
+" Allow backspace in insert mode
 set backspace=indent,eol,start
 
-set history=2000	" keep 200 lines of command line history
-set ruler		" show the cursor position all the time
-set showcmd		" display incomplete commands
-set wildmenu		" display completion matches in a status line
-set ttimeout		" time out for key codes
-set ttimeoutlen=100	" wait up to 100ms after Esc for special key
+" Optimize for fast terminal connections
+set ttyfast
 
-" Show @@@ in the last line if it is truncated.
-set display=truncate
+" Use UTF-8 without BOM
+set encoding=utf-8 nobomb
 
-" Show a few lines of context around the cursor.  Note that this makes the
-" text scroll if you mouse-click near the start or end of the window.
-set scrolloff=3
+" Enable mouse in all modes
+set mouse=a
 
-" Do incremental searching when it's possible to timeout.
-if has('reltime')
-  set incsearch
+" Don’t add empty newlines at the end of files
+set binary
+set noeol
+
+" "vim files"
+
+" Centralize backups, swapfiles and undo history
+set backupdir=~/.vim/backups
+set directory=~/.vim/swaps
+if exists("&undodir")
+	set undodir=~/.vim/undo
 endif
 
-" Do not recognize octal numbers for Ctrl-A and Ctrl-X, most users find it
-" confusing.
-"set nrformats-=octal
+" Don’t create backups when editing files in certain directories
+set backupskip=/tmp/*,/private/tmp/*
 
-" Don't use Ex mode, use Q for formatting.
-" Revert with ":unmap Q".
-map Q gq
+" Enable per-directory .vimrc files and disable unsafe commands in them
+set exrc
+set secure
 
-" CTRL-U in insert mode deletes a lot.  Use CTRL-G u to first break undo,
-" so that you can undo CTRL-U after inserting a line break.
-" Revert with ":iunmap <C-U>".
-inoremap <C-U> <C-G>u<C-U>
+" "searching" 
 
-" In many terminal emulators the mouse works just fine.  By enabling it you
-" can position the cursor, Visually select and scroll with the mouse.
-" Only xterm can grab the mouse events when using the shift key, for other
-" terminals use ":", select text and press Esc.
-if has('mouse')
-  if &term =~ 'xterm'
-    set mouse=a
-  else
-    set mouse=nvi
-  endif
-endif
+" Add the g flag to search/replace by default
+set gdefault
 
-" Only do this part when Vim was compiled with the +eval feature.
-if 1
+" Highlight searches
+set hlsearch
 
-  " Enable file type detection.
-  " Use the default filetype settings, so that mail gets 'tw' set to 72,
-  " 'cindent' is on in C files, etc.
-  " Also load indent files, to automatically do language-dependent indenting.
-  " Revert with ":filetype off".
-  filetype plugin indent on
+" Ignore case of searches
+set ignorecase
 
-  " Put these in an autocmd group, so that you can revert them with:
-  " ":augroup vimStartup | au! | augroup END"
-  augroup vimStartup
-    au!
+" Highlight dynamically as pattern is typed
+set incsearch
 
-    " When editing a file, always jump to the last known cursor position.
-    " Don't do it when the position is invalid, when inside an event handler
-    " (happens when dropping a file on gvim) and for a commit message (it's
-    " likely a different one than last time).
-    autocmd BufReadPost *
-      \ if line("'\"") >= 1 && line("'\"") <= line("$") && &ft !~# 'commit'
-      \ |   exe "normal! g`\""
-      \ | endif
+" "Parking Lot"
+" Respect modeline in files. See Help Detect mode in first line of file
+"set modeline
+"set modelines=4
 
-  augroup END
+" Show “invisible” characters
+"set lcs=tab:▸\ ,trail:·,eol:¬,nbsp:_
+"set list
 
-endif
+" Change mapleader
+let mapleader=","
 
-" Switch syntax highlighting on when the terminal has colors or when using the
-" GUI (which always has colors).
-if &t_Co > 2 || has("gui_running")
-  " Revert with ":syntax off".
-  syntax on
+" Don’t reset cursor to start of line when moving around.
+set nostartofline
 
-  " I like highlighting strings inside C comments.
-  " Revert with ":unlet c_comment_strings".
-  let c_comment_strings=1
-endif
-
-" Convenient command to see the difference between the current buffer and the
-" file it was loaded from, thus the changes you made.
-" Only define it when not defined already.
-" Revert with: ":delcommand DiffOrig".
-if !exists(":DiffOrig")
-  command DiffOrig vert new | set bt=nofile | r ++edit # | 0d_ | diffthis
-		  \ | wincmd p | diffthis
-endif
-
-if has('langmap') && exists('+langremap')
-  " Prevent that the langmap option applies to characters that result from a
-  " mapping.  If set (default), this may break plugins (but it's backward
-  " compatible).
-  set nolangremap
-endif
-
-"set autoindent: New lines inherit the indentation of previous lines.
-set autoindent
-"Convert tabs to spaces.
-set expandtab
-"When shifting lines, round the indentation to the nearest multiple of shiftwidth.
-set shiftround
-"When shifting, indent using four spaces.
-set shiftwidth=4
-"Insert tabstop number of spaces when the tab key is pressed.
-set smarttab
-"Indent using four spaces.New lines inherit the indentation of previous lines.
-set tabstop=4
-"Show line numbers on the sidebar
-set number
-"Show line number on the current line and relative numbers on all other lines.
-"set relativenumber
-set visualbell
-set clipboard=unnamedplus
-set mouse=nicri
-
-
+" built in 
+filetype plugin on
 
