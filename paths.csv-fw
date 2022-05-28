@@ -1,0 +1,7 @@
+path, remarks
+~/.config/nvim/init.vim,"neovim config file"
+~/.bash_profile,""
+~/.bashrc,""
+~/.config/shell/.profile, "primary shell profile"
+~/.config/shell/aliasrc, "shell alias file"
+~/.config/shell/.bash_prompt,"terminal promt config"
