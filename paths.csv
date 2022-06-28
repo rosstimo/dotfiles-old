@@ -1,1 +1,7 @@
-.config/shell/,"shell configs"
+path,filename,remarks
+/home/tim/.config/nvim,init.vim,"neovim config file"
+/home/tim,.bash_profile,"runs at login"
+/home/tim,.bashrc,"runs on new shell"
+/home/tim/.config/shell,.profile, "primary shell profile"
+/home/tim/.config/shell,aliasrc, "shell alias file"
+/home/tim/.config/shell,.bash_prompt,"terminal prompt config"

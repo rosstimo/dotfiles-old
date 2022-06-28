@@ -1,0 +1,239 @@
+" Change mapleader
+let mapleader=","
+
+"read .vimrc. Remove if I've finally decided to manage every thing here.
+"set runtimepath^=~/.vim runtimepath+=~/.vim/after
+"    let &packpath = &runtimepath
+"    source ~/.vimrc
+
+" Plugins
+
+"make sure the plugin manager is installed. thanks luke
+if ! filereadable(system('echo -n "${XDG_CONFIG_HOME:-$HOME/.config}/nvim/autoload/plug.vim"'))
+	echo "Downloading junegunn/vim-plug to manage plugins..."
+	silent !mkdir -p ${XDG_CONFIG_HOME:-$HOME/.config}/nvim/autoload/
+	silent !curl "https://raw.githubusercontent.com/junegunn/vim-plug/master/plug.vim" > ${XDG_CONFIG_HOME:-$HOME/.config}/nvim/autoload/plug.vim
+	autocmd VimEnter * PlugInstall
+endif
+
+
+call plug#begin()
+"Plug 'roxma/nvim-completion-manager'
+"Plug 'neoclide/coc.nvim', {'branch': 'release'}
+"Plug 'SirVer/ultisnips'
+"Plug 'honza/vim-snippets'
+"Plug 'brooth/far.vim'
+Plug 'luochen1990/rainbow'
+"Plug 'lervag/vimtex'
+
+call plug#end()
+
+" acivat rainbow colored braces
+let g:rainbow_active = 1 "set to 0 if you want to enable it later via :RainbowToggle
+
+" Compile document, be it groff/LaTeX/markdown/etc. requires compiler script.
+map <leader>c :w! \| !compiler "<c-r>%"<CR>
+
+" Open corresponding .pdf/.html or preview. requires opout scripts.
+map <leader>p :!opout <c-r>%<CR><CR>
+
+" Runs a script that cleans out tex build files whenever I close out of a .tex file. requires texclear script.
+"autocmd VimLeave *.tex !texclear %
+
+
+" "Editor Stuff" 
+
+" Don't worry about vi compatability
+set nocompatible
+
+" Don’t show the intro message when starting Vim
+set shortmess=atI
+
+" Show the filename in the window titlebar
+set title
+
+" Disable error bells
+set noerrorbells
+
+" Always show status line
+set laststatus=1
+
+" Show the cursor position
+set ruler
+
+" Show the current mode
+set showmode
+
+" Enable syntax highlighting
+syntax on
+
+" Enable line numbers
+set number
+set relativenumber
+
+" multi window editing
+set splitbelow splitright
+
+" Enhance command-line completion
+set wildmode=longest,list,full
+
+" Show the (partial) command as it’s being typed
+set showcmd
+
+" Make tabs as wide as two spaces
+set tabstop=2
+
+" Disables automatic commenting on newline:
+	autocmd FileType * setlocal formatoptions-=c formatoptions-=r formatoptions-=o
+
+	" "Navigation"
+
+" Create 'tags' file
+" - ^] jump to tag under curser
+" - g^] ambiguous tag
+" - ^t jump back up the tag stack
+command! MakeTags !ctags -R .
+
+" "System"
+
+" Display matching files on Tab Complete
+" fuzzy file finder 
+set path+=**
+
+" Use the OS clipboard by default (on versions compiled with `+clipboard`) there are keybindings anyway
+set clipboard=unnamed
+
+"map CTRL+C to copy from vim to both system clipboard and primary selection
+vnoremap <C-c> "*y :let @+=@* <CR>
+
+"map CTRL+V to paste from system clipboard into vim
+map <C-v> "+P 
+
+
+"Allow cursor keys in insert mode
+if !has('nvim')
+  set esckeys
+endif
+
+" Allow backspace in insert mode
+set backspace=indent,eol,start
+
+" Optimize for fast terminal connections
+set ttyfast
+
+" Use UTF-8 without BOM
+set encoding=utf-8 nobomb
+
+" Enable mouse in all modes
+set mouse=a
+
+" Don’t add empty newlines at the end of files
+set binary
+set noeol
+
+" "vim files"
+
+"TODO think about removing the following
+" Centralize backups, swapfiles and undo history
+set backupdir=~/.cache/vim/backup
+set directory=~/.cache/vim/swap
+if exists("&undodir")
+  set undodir=~/.cache/vim/undo
+endif
+" Don’t create backups when editing files in certain directories
+set backupskip=/tmp/*,/private/tmp/*
+
+" "searching" 
+
+" Add the g flag to search/replace by default
+set gdefault
+
+" Highlight searches
+set hlsearch
+
+" Ignore case of searches
+"set ignorecase
+
+" Highlight dynamically as pattern is typed
+set incsearch
+
+" "Parking Lot"
+" Respect modeline in files. See Help Detect mode in first line of file
+set modeline
+set modelines=4
+
+" Show “invisible” characters
+set lcs=tab:▸\ ,trail:·,eol:¬,nbsp:_
+set list
+
+" Don’t reset cursor to start of line when moving around.
+set nostartofline
+
+" built in 
+filetype plugin on
+
+" AUTOCOMPLETE:
+
+" The good stuff is documented in |ins-completion|
+
+" HIGHLIGHTS:
+" - ^x^n for JUST this file
+" - ^x^f for filenames (works with our path trick!)
+" - ^x^] for tags only
+" - ^n for anything specified by the 'complete' option
+
+" NOW WE CAN:
+" - Use ^n and ^p to go back and forth in the suggestion list
+
+" FILE BROWSING:
+
+" Tweaks for browsing
+let g:netrw_banner=0        " disable annoying banner
+let g:netrw_browse_split=4  " open in prior window
+let g:netrw_altv=1          " open splits to the right
+let g:netrw_liststyle=3     " tree view
+let g:netrw_list_hide=netrw_gitignore#Hide()
+let g:netrw_list_hide.=',\(^\|\s\s\)\zs\.\S\+'
+
+" NOW WE CAN:
+" - :edit a folder to open a file browser
+" - <CR>/v/t to open in an h-split/v-split/tab
+" - check |netrw-browse-maps| for more mappings
+
+" SNIPPETS:
+
+" Read an empty HTML template and move cursor to title
+nnoremap ,html :-1read $HOME/.vim/.skeleton.html<CR>3jwf>a
+
+" insert a marker for navigate,find,replace
+nnoremap <leader>tt :-1a<CR><++><CR><BS>i<End><Del><ESC>
+
+nnoremap <leader>ti :echo 'Current time is ' . strftime('%c')<CR> 
+
+" Show currently defined keymaps
+nnoremap <leader>?? :map<CR>
+nnoremap <leader>??? :verbose map<CR>
+
+" BUILD INTEGRATION:
+
+" Configure the `make` command to run RSpec
+""set makeprg=bundle\ exec\ rspec\ -f\ QuickfixFormatter
+
+" NOW WE CAN:
+" - Run :make to run RSpec
+" - :cl to list errors
+" - :cc# to jump to error by number
+" - :cn and :cp to navigate forward and back
+
+""luke's voidrice
+" 'Replace all' is aliased to S.  nnoremap S :%s//g<Left><Left>
+"
+"Check file in shellcheck:
+map <leader>s :!clear && shellcheck -x %<CR>
+
+" Save file as sudo on files that require root permission
+cnoremap w!! execute 'silent! write !sudo tee % >/dev/null' <bar> edit!
+
+" Auto recompile/refresh on save:
+autocmd BufWritePost ~/.suckless/dwmblocks/config.h !cd ~/.suckless/dwmblocks/; sudo make install && { killall -q dwmblocks;setsid dwmblocks & }
+
