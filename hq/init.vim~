@@ -1,4 +1,4 @@
-" Change mapleader  
+" Change mapleader
 let mapleader=","
 
 "read .vimrc. Remove if I've finally decided to manage every thing here.
