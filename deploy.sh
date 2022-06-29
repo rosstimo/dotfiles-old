@@ -1,6 +1,6 @@
 #!/bin/sh
 
-## backup shell configs. Note: -n opton is dryrun
+## deploy configs. Note: -n opton is dryrun
 
 if [[ -r $PWD/paths.csv ]]; then
   input=$PWD/paths.csv

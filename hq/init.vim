@@ -36,7 +36,6 @@ map <leader>c :w! \| !compiler "<c-r>%"<CR>
 
 " Open corresponding .pdf/.html or preview. requires opout scripts.
 map <leader>p :!opout <c-r>%<CR><CR>
-
 " Runs a script that cleans out tex build files whenever I close out of a .tex file. requires texclear script.
 "autocmd VimLeave *.tex !texclear %
 
@@ -82,6 +81,10 @@ set showcmd
 
 " Make tabs as wide as two spaces
 set tabstop=2
+set softtabstop=2
+set expandtab
+set shiftwidth=2
+map <leader><TAB> :retab <CR>
 
 " Disables automatic commenting on newline:
 	autocmd FileType * setlocal formatoptions-=c formatoptions-=r formatoptions-=o
