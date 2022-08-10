@@ -6,3 +6,4 @@ path,filename,remarks
 /home/tim/.config/shell,aliasrc, "shell alias file"
 /home/tim/.config/shell,.bash_prompt,"terminal prompt config"
 /home/tim/.config/nvim,init.vim,"neovim config file"
+/home/tim/.config/awesome,rc.lua,"awesome WM settings"
