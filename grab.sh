@@ -12,8 +12,10 @@
    do
      src=$path/$filename
      dst=$PWD/$HOSTNAME
-     if [[ -r "$src" ]]; then
-       if [[ ! -e $dst ]]; then
+     if   [[ "$src" == "/" ]]; then # don't back up / if there are blank lines in the csv file.
+				echo "oops, blank line present in paths.csv. safe to ignore..."
+		 elif [[ -r "$src" ]]; then
+			 if [[ ! -e $dst ]]; then
         echo "this may be the first run..."
 				echo "creating directory $dst and $dst/bkp" 
         mkdir -pv $dst
