@@ -18,8 +18,5 @@ shopt -s histappend
 
 # no duplicates
 export HISTCONTROL=ignoredups:erasedups
-export HISTSIZE=10000
-export HISTFILESIZE = 100000
 
 echo "end .bashrc"
-clear

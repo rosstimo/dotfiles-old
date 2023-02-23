@@ -4,7 +4,7 @@ echo "start aliasrc"
 [ -x "$(command -v nvim)" ] && alias vim="nvim" vimdiff="nvim -d"
 
 # Use $XINITRC variable if file exists.
-[ -f "$XINITRC" ] && alias startx='startx $XINITRC'
+[ -f "$XINITRC" ] && alias startx="startx $XINITRC"
 
 # sudo not required for some system commands
 for command in mount umount sv pacman updatedb su shutdown poweroff reboot ; do
@@ -18,17 +18,9 @@ alias \
 	rm="rm -vI" \
 	bc="bc -ql" \
 	mkd="mkdir -pv" \
-	ytd="yt-dlp --write-description --write-playlist-metafiles --write-info-json --write-thumbnail --write-subs" \
-	ytl="yt-dlp --list-formats" \
-	yta="yt-dlp -x -f bestaudio/best" \
+	yt="youtube-dl --add-metadata -i" \
+	yta="yt -x -f bestaudio/best" \
 	ffmpeg="ffmpeg -hide_banner"
-	#yt="youtube-dl --add-metadata -i" \ 	
-# --write-description
-# --write-playlist-metafiles
-# --write-info-json
-# --write-thumbnail 
-# --F, --list-formats
-# --write-subs
 
 # Colorize commands when possible.
 alias \
@@ -46,22 +38,17 @@ alias \
 	trem="transmission-remote" \
 	YT="youtube-viewer" \
 	sdn="shutdown -h now" \
-	e='$EDITOR' \
-	v='$EDITOR' \
+	e="$EDITOR" \
+	v="$EDITOR" \
 	p="pacman" \
 	xi="sudo xbps-install" \
 	xr="sudo xbps-remove -R" \
 	xq="xbps-query" \
 	z="zathura"
 
-# Quick edit various config/dotfiles
 alias \
-aliasrc="vim $HOME/.config/shell/aliasrc" \
-prompt="vim $HOME/.config/shell/.bash_prompt" \
-profile="vim $HOME/.config/shell/.profile" \
-bashrc="vim $HOME/.bashrc" \
-vimrc="vim $HOME/.config/nvim/"
-
-
+	magit="nvim -c MagitOnly" \
+	ref="shortcuts >/dev/null; source ${XDG_CONFIG_HOME:-$HOME/.config}/shell/shortcutrc ; source ${XDG_CONFIG_HOME:-$HOME/.config}/shell/zshnameddirrc" \
+	weath="less -S ${XDG_DATA_HOME:-$HOME/.local/share}/weatherreport" \
 
 echo "end aliasrc"

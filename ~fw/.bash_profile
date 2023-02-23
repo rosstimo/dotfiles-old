@@ -4,5 +4,5 @@
 echo "start .bash_profile"
 [[ -f /home/tim/.config/shell/.profile ]] && . /home/tim/.config/shell/.profile
 #[[ -f ~/.bashrc ]] && . ~/.bashrc
-#exec startx
+exec startx
 echo "end .bash_profile"
